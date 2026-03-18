@@ -1,0 +1,33 @@
+## 1. init_caht_model
+
+model = init_chat_model(
+    "gpt-5-nano",
+    temperatue = 0.7,
+    timeout = 30,
+    max_token = 1000
+)
+
+response = model.invoke("안녕하세요. 당신은 누구입니까?")
+
+## 2. token 사용량 확인
+response.usage_metadata 
+
+stream() # 말뭉치 단위로 잘라서 하나씩 답변 생성 -> UV 증가
+
+for chunk in model.stream("안녕하세요."):
+    print(chunk.text, end="")
+
+batch() # 여러 질문을 병렬적으로 요청 가능 -> UX 증가 및 모델 호출을 줄여 비용 감소 (여러 프롬프트를 한 번에 날리는 방식)
+
+inputs = [
+    "오늘 점심 메뉴 추천해줘",
+    "AI AGENT는 어떻게 만들어?",
+    "AI AGENT를 활용한 방법에 대해 알려줘"
+]
+responses = model.batch(inputs)
+for response in responses:
+    print(response)
+
+
+## Structured Outputs
+from pydantic import BaseModel, Field
