@@ -33,5 +33,32 @@
   - max_retries
     - 네트워크 오류 발생 시 자동 재시도를 통해 연결 성공률 확보
 
-4. 
-5. 
+3. 구조화된 답변 생성
+- 특정 형태로 파싱할 때 사용 (스키마 작성)
+  - pydantic 방식
+    - class 정의 class weather(BaseModel): (컨셉: 날씨와 관련된 정보)
+      - 첫 줄에 description: """상세한 날씨 정보"""
+      - 해당 답변에 대한 정보에 대해 변수명 + 각 변수명에 대한 description 작성
+         - rain_prob: float = Field(description="강수확률")
+         - state: str = Field(description="날씨상태")
+         - time: int = Field(description="현재시간")
+         - location: int = Field(description="장소") 
+    - model.with_structured_output(weather)
+    - response = model_with_structure.invoke("현재 성남시 날씨 정보 알려줘")
+  - json 방식
+    - 스키마 생성은 json으로 진행함. (영어/숫자/언더스코어/대시 만 사용가능)
+    - pydantic과 다르게 파싱만 지원됨.
+
+4. 메모리 구현
+- 메세지 구성요소
+  - System Message: 개발자가 사전에 작성한 입력 (프롬프트)
+  - Human Message: 사용자의 요청, 입력
+  - AI Message: Model의 답변 (result)
+
+ from langchain.messages import HumanMessage, AIMessage, SystemMessage
+
+sys_msg = SystemMessage("당신은 유능한 요양보호사입니다.")
+hum_msg = HumanMessage("궁금한게 있습니다.")
+messages = [ sys_msg, hum_msg ]
+
+ 
