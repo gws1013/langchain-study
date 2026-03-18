@@ -1,5 +1,6 @@
 # langchain-study
 랭체인 및 관련하여 공부를 했던 내용을 정리한 Repository 입니다.
+학습한 강의 링크: https://www.youtube.com/watch?v=rb3ZYR_Q1po
 
 0. langchain 설치
 !pip install -U langchain
